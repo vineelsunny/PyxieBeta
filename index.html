@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	    <meta http-equiv="Cache-control" content="no-cache">
+		<meta http-equiv="pragma" content="no-cache">
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0"/>
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>Hello World</title>
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+	  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.css" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.js"></script>
+ <!-- <script type="text/javascript" src="jquery.session.js"></script> -->
+	<script>
+	
+
+	$(document).ready(function() {
+	
+		$("#login").click(function(event){
+	
+	if(window.navigator.onLine){
+		  
+	     var number = 1 + Math.floor(Math.random() * 1000000);
+            localStorage.setItem('twitterNumber',number);
+			$.ajax({
+						   url:'http://64.251.15.49:8084/pyxies/userservice/rest/twitter/authentication?clientId='+localStorage.getItem('twitterNumber'),
+						   type: 'GET',
+			                crossDomain: true,
+							  success: function(responseData, textStatus, jqXHR) 
+							  {
+							  			  
+							   var data=jQuery.parseJSON(responseData);							 
+							   var new_window=window.open(data.url,"","");		
+								var interval = window.setInterval(function() {
+										try {
+											if (new_window == null || new_window.closed) {
+												window.clearInterval(interval);
+												getTwitterUserDetails(localStorage.getItem('twitterNumber'));
+											}
+										}
+										catch (e) {
+										}
+									}, 500);
+							   
+							  },
+							  error: function (responseData, textStatus, errorThrown) 
+							  {							 
+								alert("Please try again after sometime!");
+							  }
+							});
+
+		}
+		else{
+		 alert("Please Check Your Internet Connection");
+		}
+	
+	});
+	
+	function getTwitterUserDetails(number){
+
+					$.ajax({
+							   url: 'http://64.251.15.49:8084/pyxies/userservice/rest/twitter/profile?clientId='+number,
+							  type: 'GET', 
+							  crossDomain: true,
+							  success: function(responseData, textStatus, jqXHR) 
+							  {
+									
+									  var obj = jQuery.parseJSON(responseData);
+									  
+								        $("#profile_name").text(obj.name);
+										
+										var imgurl=$.trim(obj.profile_image_url)
+										var res = imgurl.replace("_normal", "");
+										
+									    $('#profile_pic').attr('src',res);
+									  
+									  
+							  },
+							  error: function (responseData, textStatus, errorThrown) 
+							  {
+							   
+							  alert("Please try again after sometime!");
+							  }
+						 });
+	
+	
+       
+
+	}
+	
+		$("#shareontwitter").click(function(){
+	 //https://twitter.com/share?url=URLENCODED_URL&via=TWITTER_HANDLE&text=TEXT
+		//window.open("https://twitter.com/home?status=http://www.google.com","","menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600");
+		var urlPost="http://www.google.com";
+	        var url='https://twitter.com/intent/tweet?text=hello+Pyxies&via=Pyxies&url='+encodeURIComponent(urlPost)+'&hashtags=Pyxies';
+			 var ref = window.open(url, '', '');
+		
+		});
+
+	});
+
+	</script>
+	
+    </head>
+    <body> 
+	<button id="login">Login with twitter</button>
+	<button id="shareontwitter" >ShareOnTwitter</button>
+	
+	
+	<div>
+	<p id="profile_name"></p>	
+	<img id="profile_pic" width="200px" height="300px"/>
+	</div>
+	
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+		
+    </body>
+</html>

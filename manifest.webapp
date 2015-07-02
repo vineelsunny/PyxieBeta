@@ -1,0 +1,26 @@
+{
+    "launch_path": "/index.html",
+    "installs_allowed_from": [
+        "*"
+    ],
+    "version": "1.0",
+    "name": "PyxiesBeta",
+    "description": "Pyxies let you create and share your own content from a specific search term! Create a tag and select the sources you want, Pyxies will show to you the earliest search results. A Pyxie for each topic or term you want will be created so you can check the latest news or what social networks are talking about.",
+    "developer": {
+        "name": "Pyxis Ventures"
+    },
+    "icons": {
+        "60": "/icon/icon-60.png",
+		"128": "/icon/icon-128.png"
+    },
+	"default_locale": "en",
+	
+    "permissions": {
+       "systemXHR": {
+	    "description":"Allows anonymous (no cookies) cross-origin XHR without the target site having CORS enabled. Similar to the TCP Socket API but restricted to XHR, not just raw sockets, so it is slightly less risky"
+		}
+    },
+	"redirects": [
+		 
+		]
+}
